@@ -7,9 +7,9 @@ use Symfony\Component\HttpClient\HttpClient;
 class BaseLitmusClient
 {
     /**
-     * @var HttpClient
+     * @var HttpClient|null
      */
-    private $client;
+    private $client=null;
 
     /**
      * @var LoggerInterface
@@ -30,13 +30,15 @@ class BaseLitmusClient
     {
         $this->apiUsername = $apiUsername;
         $this->apiPassword = $apiPassword;
-
-        $this->getClient();
     }
 
-    public function getClient()
+    public function setClient()
     {
-        $this->client = HttpClient::create();
+        if ($this->client === null) {
+            $this->client = HttpClient::create();
+        }
+
+        return $this->client;
     }
 
     public function getLogger(LoggerInterface $logger)
@@ -58,6 +60,8 @@ class BaseLitmusClient
 
     public function request($method, $path, $params=[])
     {
+         $this->client = $this->setClient();
+
          $response = $this->client->request($method, $path, [
             'auth_basic' => [$this->getApiUsername(), $this->getApiPassword()],
             'query' => isset($params['query']) ? $params['query'] : null,

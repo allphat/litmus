@@ -2,6 +2,7 @@
 
 namespace Allphat\Litmus;
 
+use Allphat\Litmus\Exception\LitmusException;
 use Allphat\Litmus\Service\Instant;
 use Allphat\Litmus\Service\Test;
 
@@ -28,7 +29,7 @@ class Factory
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getServiceClass(string $name)
     {
@@ -51,8 +52,6 @@ class Factory
             return $this->services[$name];
         }
 
-        trigger_error('Undefined property: ' . static::class . '::$' . $name);
-
-        return null;
+        throw new LitmusException('Undefined class: ' . static::class . '::$' . $name);
     }
 }
