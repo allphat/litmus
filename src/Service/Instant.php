@@ -10,8 +10,10 @@ class Instant extends AbstractService
 {
     const INSTANT_BASE_URI = 'https://instant-api.litmus.com/v1';
 
-    /*
-     * retusn an array of supported email clients
+    /**
+     * see https://docs.litmus.com/docs/list-supported-email-clients
+     *
+     * returns an array of supported email clients
      */
     public function getSupportedEmailClients()
     {
@@ -19,14 +21,13 @@ class Instant extends AbstractService
 
         $response = $this->getClient()->request('GET', $url);
 
-        $content = $response->getContent();
-
-        return $content;
+        return $this->getResult($response);
     }
 
-    /*
-     * returns an array of supported email clients configuration
+    /**
+     * see https://docs.litmus.com/docs/list-supported-email-client-configurations
      *
+     * returns an array of supported email clients configuration
      */
     public function getSupportedEmailClientConfiguration()
     {
@@ -34,50 +35,54 @@ class Instant extends AbstractService
 
         $response = $this->getClient()->request('GET', $url);
 
-        $content = $response->getContent();
-
-        return $content;
-    }
-
-    public function requestPreview(string $emailGuid, string $clientName, string $images= 'allowed', string $orientation='vertical')
-    {
-        $url = self::INSTANT_BASE_URI . '/emails/' . $emailGuid . '/' . $clientName;
-
-        $auery = [
-            'images' => $images,
-            'orientation' => $orientation
-        ];
-
-        $response = $this->getClient()->request('GET', $url, ['query' => $query]);
-
-        $content = $response->getContent();
-
-        return $content;
+        return $this->getResult($response);
     }
 
     /**
+     * see https://docs.litmus.com/docs/request-a-preview
+     *
+     * @var string $emailGuid email guid
+     * @var string $clientName client for which preview is requested
+     * @var array<string, string>|[] images and orientation parameters if non empty
+     */
+    public function requestPreview(string $emailGuid, string $clientName, array $params=[])
+    {
+        $url = self::INSTANT_BASE_URI . '/emails/' . $emailGuid . '/' . $clientName;
+
+        $response = $this->getClient()->request('GET', $url, $params);
+
+        return $this->getResult($response);
+    }
+
+    /**
+     * see https://docs.litmus.com/docs/create-an-email
      * creates an email based on array parameters passed in request
-     * returns string email_guid
+     *
+     * @var array<string,string>|[]
+     *
+     * @returns string email_guid
      */
     public function createEmail(array $params)
     {
         $url = self::INSTANT_BASE_URI . '/emails';
 
-        $response = $this->getClient()->request('POST', $url, ['json' => $params]);
+        $response = $this->getClient()->request('POST', $url, $params);
 
-        $content = $response->getContent();
-
-        return $content;
+        return $this->getResult($response);
     }
 
-    public function requestPreviewImage(string $emailGuid, string $client, string $captureSize, array $params)
+    /**
+     * see https://docs.litmus.com/docs/directly-request-or-embed-a-preview-image
+     * @var string $emailGuid
+     * @var string $client
+     * @var array<string, string>|[] url parameters 
+     */
+    public function requestPreviewImage(string $emailGuid, string $client, string $captureSize, array $params=[])
     {
         $url = self::INSTANT_BASE_URI . '/emails/' . $emailGuid . '/' . $client . '/' .$captureSize;
 
-        $response = $this->getClient()->request('GET', $url, ['query' => $params]);
+        $response = $this->getClient()->request('GET', $url, $params);
 
-        $content = $response->getContent();
-
-        return $content;
+        return $this->getResult($response);
     }
 }

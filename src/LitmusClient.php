@@ -2,6 +2,8 @@
 
 namespace Allphat\Litmus;
 
+use Allphat\Litmus\Exception\LitmusException;
+
 class LitmusClient extends BaseLitmusClient
 {
     /**

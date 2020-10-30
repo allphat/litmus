@@ -60,15 +60,13 @@ class BaseLitmusClient
 
     public function request($method, $path, $params=[])
     {
-         $this->client = $this->setClient();
-
-         $response = $this->client->request($method, $path, [
+        $this->client = $this->setClient();
+         
+        $response = $this->client->request($method, $path, [
             'auth_basic' => [$this->getApiUsername(), $this->getApiPassword()],
             'query' => isset($params['query']) ? $params['query'] : null,
             'json' => isset($params['post']) ? $params['post'] : null,
-         ]);
-
-        //@TODO add method to check for http status of response
+        ]);
 
         return $response;
     }

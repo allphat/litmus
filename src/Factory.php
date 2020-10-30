@@ -2,14 +2,14 @@
 
 namespace Allphat\Litmus;
 
-use Allphat\Litmus\Exception\LitmusException;
 use Allphat\Litmus\Service\Instant;
-use Allphat\Litmus\Service\Test;
+use Allphat\Litmus\Service\Preview;
 
 class Factory
 {
     private static $classMap = [
         'instant' => Instant::class,
+        'preview' => Preview::class,
     ];
 
     /**
@@ -51,7 +51,5 @@ class Factory
 
             return $this->services[$name];
         }
-
-        throw new LitmusException('Undefined class: ' . static::class . '::$' . $name);
     }
 }

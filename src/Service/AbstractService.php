@@ -2,6 +2,8 @@
 
 namespace Allphat\Litmus\Service;
 
+use Symfony\Contracts\HttpClient\ResponseInterface;
+
 abstract class AbstractService
 {
     protected $client;
@@ -14,5 +16,17 @@ abstract class AbstractService
     public function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * @return array<int, mixed>
+     *
+     */
+    protected function getResult(ResponseInterface $response)
+    {
+        return [
+            'status' => $response->getStatusCode(),
+            'content' => $response->getContent()
+        ];
     }
 }

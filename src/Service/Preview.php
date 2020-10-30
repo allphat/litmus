@@ -2,7 +2,7 @@
 
 namespace Allphat\Litmus\Service;
 
-class Instant extends AbstractService
+class Preview extends AbstractService
 {
     const TEST_BASE_URI = 'https://previews-api.litmus.com/api/v1';
 
@@ -16,9 +16,7 @@ class Instant extends AbstractService
 
         $response = $this->getClient()->request('POST', $url);
 
-        $content = $response->getContent();
-
-        return $content;
+        return $this->getResult($response);
     }
 
     public function getTestStatus(int $id)
@@ -27,9 +25,7 @@ class Instant extends AbstractService
 
         $response = $this->getClient()->request('GET', $url);
 
-        $content = $response->getContent();
-
-        return $content;
+        return $this->getResult($response);
     }
 
     public function getTest(int $id)
@@ -37,8 +33,6 @@ class Instant extends AbstractService
         $url = self::TEST_BASE_URI . '/EmailTests/' . $id;
 
         $response = $this->getClient()->request('GET', $url);
-
-        $content = $response->getContent();
 
 	//check if completed
         //result type property is email => capture image accessible
@@ -64,7 +58,7 @@ class Instant extends AbstractService
            FullpageImageThumb
           */
 
-        return $content;
+        return $this->getResult($response);
     }
 
     public function linksTest(string $html)
