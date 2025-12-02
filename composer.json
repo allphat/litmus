@@ -3,8 +3,8 @@
     "description": "Sdk for the Litmus Customer RESTful API",
     "type": "library",
      "require": {
-        "php": "~7.3",
-        "symfony/http-client": "4.4.*"
+        "php": "~8.3",
+        "symfony/http-client": "6.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9"
