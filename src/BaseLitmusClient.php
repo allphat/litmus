@@ -6,28 +6,19 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class BaseLitmusClient
 {
-    /**
-     * @var HttpClient|null
-     */
     private $client=null;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private Loggerinterface $logger;
 
-    /**
-     * @var string
-     */
-    private $apiUsername;
+    private string $apiKey;
 
-    /**
-     * @var string
-     */
-    private $apiPassword;
+    private string $apiUsername;
 
-    public function __construct(string $apiUsername, string $apiPassword)
+    private string $apiPassword;
+
+    public function __construct(string $apiKey, string $apiUsername, string $apiPassword)
     {
+        $this->apiKey = $apiKey;
         $this->apiUsername = $apiUsername;
         $this->apiPassword = $apiPassword;
     }
@@ -48,6 +39,11 @@ class BaseLitmusClient
         return $this;
     }
 
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
     public function getApiUsername()
     {
         return $this->apiUsername;
@@ -61,9 +57,10 @@ class BaseLitmusClient
     public function request($method, $path, $params=[])
     {
         $this->client = $this->setClient();
-         
+
         $response = $this->client->request($method, $path, [
-            'auth_basic' => [$this->getApiUsername(), $this->getApiPassword()],
+            //'auth_basic' => [$this->getApiUsername(), $this->getApiPassword()],
+            'auth_basic' => [$this->getApiKey(), ''],
             'query' => isset($params['query']) ? $params['query'] : null,
             'json' => isset($params['post']) ? $params['post'] : null,
         ]);
