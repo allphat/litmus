@@ -29,4 +29,9 @@ abstract class AbstractService
             'content' => $response->getContent()
         ];
     }
+
+    protected function getContent(ResponseInterface $response)
+    {
+        return json_decode($response->getContent(), true);
+    }
 }
