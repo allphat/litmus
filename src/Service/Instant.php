@@ -31,7 +31,7 @@ class Instant extends AbstractService
      */
     public function getSupportedEmailClientConfiguration()
     {
-        $url = self::INSTANT_BASE_URI . '/clients/configuration';
+        $url = self::INSTANT_BASE_URI . '/clients/configurations';
 
         $response = $this->getClient()->request('GET', $url);
 
